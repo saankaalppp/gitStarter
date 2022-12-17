@@ -13,7 +13,33 @@ function savetoLocalStorage(e){
     showNewUserOnScreen(obj)
 }
 function showNewUserOnScreen(user){
+    document.getElementById('email').value=''
+    document.getElementById('name').value=''
+    if(localStorage.getItem(user.email)!==null){
+        removeUserFromScreen(user.email)
+    }
     const parentNode=document.getElementById('userslist') 
-    const childHtml=`<li> ${user.name} - ${user.email}</li>`
+    const childHtml=`<li id=${user.email}> ${user.name} - ${user.email} 
+                    <button onclick=deleteUser('${user.email}')>Delete user</button>
+                    <button onclick=editUserDetails('${user.email}','${user.name}')>Edit User </button>
+                    </li>`
     parentNode.innerHTML=parentNode.innerHTML+childHtml
+}
+function editUserDetails(emailId, name, phonenumber){
+
+    document.getElementById('email').value = emailId;
+    document.getElementById('name').value = name;
+    deleteUser(emailId)
+ }
+function deleteUser(emailId){
+    console.log(emailId)
+    localStorage.removeItem(emailId)
+    removeUserFromScreen(emailId); 
+}
+function removeUserFromScreen(emailId){
+    const parentNode=document.getElementById('userslist')
+    const childNodeToBeDeleted=document.getElementById(emailId) 
+    if(childNodeToBeDeleted){
+        parentNode.removeChild(childNodeToBeDeleted)
+    }
 }
